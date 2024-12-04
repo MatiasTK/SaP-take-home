@@ -22,14 +22,20 @@ router.post('/files', upload.single('file'), (req: Request, res: Response) => {
     return;
   }
 
-  const csvString = Buffer.from(req.file.buffer).toString('utf-8');
-  const json = csvToJson.fieldDelimiter(',').csvStringToJson(csvString);
+  try {
+    const csvString = Buffer.from(req.file.buffer).toString('utf-8');
+    const json = csvToJson.fieldDelimiter(',').csvStringToJson(csvString);
 
-  userData.push(...json);
+    userData.push(...json);
 
-  res.status(200).send({
-    message: 'El archivo se cargó correctamente',
-  });
+    res.status(200).send({
+      message: 'El archivo se cargó correctamente',
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: 'Error: No se pudo cargar el archivo',
+    });
+  }
 });
 
 router.get('/users', (req: Request, res: Response) => {
