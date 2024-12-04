@@ -33,30 +33,19 @@ router.post('/files', upload.single('file'), (req: Request, res: Response) => {
 });
 
 router.get('/users', (req: Request, res: Response) => {
-  const { query } = req;
-  const keys = Object.keys(query);
+  const { q } = req.query;
 
-  if (keys.length == 0) {
-    res.status(200).send({
-      data: userData,
+  if (!q) {
+    res.status(500).send({
+      message: 'Error: No se ha enviado ningún parámetro de búsqueda',
     });
+
+    return;
   }
 
-  keys.forEach((key) => {
-    if (!userData[0].hasOwnProperty(key)) {
-      res.status(500).send({
-        message: `Error: La propiedad ${key} no existe en los datos`,
-      });
-    }
-  });
-
   const filteredData = userData.filter((user) => {
-    return keys.every((key) => {
-      if (!query[key]) {
-        return true;
-      }
-
-      return user[key].toLowerCase().includes(query[key].toString().toLowerCase());
+    return Object.keys(user).some((key) => {
+      return user[key].toString().toLowerCase().includes(q.toString().toLowerCase());
     });
   });
 
