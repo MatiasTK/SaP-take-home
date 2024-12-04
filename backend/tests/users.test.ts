@@ -3,7 +3,7 @@ import { app } from '@/app';
 import path from 'path';
 
 beforeAll(async () => {
-  const filePath = path.join(__dirname, 'examples/mock.csv');
+  const filePath = path.join(__dirname, 'data/mock.csv');
   await request(app).post('/api/files').attach('file', filePath);
 });
 

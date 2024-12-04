@@ -4,7 +4,7 @@ import path from 'path';
 
 describe('POST /api/files with accepted file', () => {
   it('should upload a CSV file', async () => {
-    const filePath = path.join(__dirname, 'examples/mock.csv');
+    const filePath = path.join(__dirname, 'data/mock.csv');
     const response = await request(app).post('/api/files').attach('file', filePath);
 
     expect(response.status).toBe(200);
@@ -14,7 +14,7 @@ describe('POST /api/files with accepted file', () => {
 
 describe('POST /api/files with rejected file', () => {
   it('should not upload a non-CSV file', async () => {
-    const filePath = path.join(__dirname, 'examples/mock.txt');
+    const filePath = path.join(__dirname, 'data/mock.txt');
     const response = await request(app).post('/api/files').attach('file', filePath);
 
     expect(response.status).toBe(500);
@@ -33,7 +33,7 @@ describe('POST /api/files without file', () => {
 
 describe('POST /api/files with empty csv file', () => {
   it('should not upload a file', async () => {
-    const filePath = path.join(__dirname, 'examples/mock_empty.csv');
+    const filePath = path.join(__dirname, 'data/mock_empty.csv');
     const response = await request(app).post('/api/files').attach('file', filePath);
 
     expect(response.status).toBe(500);

@@ -4,8 +4,6 @@ import routes from '@/routes/api';
 
 export const app = express();
 
-export const userData: Array<Record<string, string>> = [];
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
