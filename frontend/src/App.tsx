@@ -1,5 +1,5 @@
-import Search from './components/Search';
-import SelectFile from './components/SelectFile';
+import Search from '@/components/Search';
+import SelectFile from '@/components/SelectFile';
 
 function App() {
   return (

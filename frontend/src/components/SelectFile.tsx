@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import Button from './Button';
+import Button from '@/components/ui/Button';
 
 export default function SelectFile() {
   const [file, setFile] = useState<File | null>(null);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useDebounce } from '../hooks/useDebounce';
-import { DEBOUNCE_TIME } from '../constants';
+import { useDebounce } from '@/hooks/useDebounce';
+import { DEBOUNCE_TIME } from '@/constants';
 import toast from 'react-hot-toast';
 
 export default function Search() {
