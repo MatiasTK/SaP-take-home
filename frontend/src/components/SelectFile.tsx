@@ -46,6 +46,7 @@ export default function SelectFile() {
         <input
           type="file"
           accept="text/csv"
+          data-testid="file-input"
           className="hidden"
           onChange={handleFileChange}
           ref={fileInputRef}

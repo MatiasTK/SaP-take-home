@@ -32,10 +32,10 @@ export default function Search() {
           setUsers(data.data);
         })
         .catch((error) => {
-          toast.error(`Ocurrió un error: ${error.message}`);
+          toast.error(error.message);
         });
     }
-  });
+  }, [debouncedSearch]);
 
   return (
     <div>
