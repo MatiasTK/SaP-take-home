@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import Button from '@/components/ui/Button';
 import { LuFileSearch, LuUpload } from 'react-icons/lu';
+import { API_URL } from '@/constants';
 
 export default function SelectFile() {
   const [file, setFile] = useState<File | null>(null);
@@ -27,7 +28,7 @@ export default function SelectFile() {
         const formData = new FormData();
         formData.append('file', file);
 
-        const res = await fetch('http://localhost:3000/api/files', {
+        const res = await fetch(`${API_URL}/api/files`, {
           method: 'POST',
           body: formData,
         });

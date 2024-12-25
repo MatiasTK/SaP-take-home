@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
-import { DEBOUNCE_TIME } from '@/constants';
+import { API_URL, DEBOUNCE_TIME } from '@/constants';
 import toast from 'react-hot-toast';
 import { LuCircleX, LuInfo, LuSearch } from 'react-icons/lu';
 
@@ -25,7 +25,7 @@ export default function Search() {
       setLoading(true);
       setUsers([]);
       try {
-        fetch(`http://localhost:3000/api/users?q=${debouncedSearch}`)
+        fetch(`${API_URL}/api/users?q=${debouncedSearch}`)
           .then((res) => {
             if (res.ok) {
               return res.json();

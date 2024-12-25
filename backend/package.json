@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node -r ts-node/register/transpile-only -r tsconfig-paths/register ./src/app.ts",
+    "start": "ts-node --transpile-only -r tsconfig-paths/register src/app.ts",
     "dev": "nodemon",
     "test": "jest",
     "coverage": "jest --coverage"
