@@ -1,6 +1,0 @@
-id,nombre,apellido,email,telefono,fecha_registro,activo
-1,Juan,Pérez,juan.perez@example.com,555-1234,2024-01-15,true
-2,Maria,Gonzalez,maria.gonzalez@example.com,555-5678,2024-02-20,true
-3,Carlos,Lopez,carlos.lopez@example.com,555-9101,2023-11-05,false
-4,Ana,Martinez,ana.martinez@example.com,555-1122,2024-03-01,true
-5,Sofia,Garcia,sofia.garcia@example.com,555-3344,2024-04-12,false

@@ -1,0 +1,49 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "email": "juan.perez@example.com",
+      "telefono": "555-1234",
+      "fecha_registro": "2024-01-15",
+      "activo": "true"
+    },
+    {
+      "id": "2",
+      "nombre": "Maria",
+      "apellido": "Gonzalez",
+      "email": "maria.gonzalez@example.com",
+      "telefono": "555-5678",
+      "fecha_registro": "2024-02-20",
+      "activo": "true"
+    },
+    {
+      "id": "3",
+      "nombre": "Carlos",
+      "apellido": "Lopez",
+      "email": "carlos.lopez@example.com",
+      "telefono": "555-9101",
+      "fecha_registro": "2023-11-05",
+      "activo": "false"
+    },
+    {
+      "id": "4",
+      "nombre": "Ana",
+      "apellido": "Martinez",
+      "email": "ana.martinez@example.com",
+      "telefono": "555-1122",
+      "fecha_registro": "2024-03-01",
+      "activo": "true"
+    },
+    {
+      "id": "5",
+      "nombre": "Sofia",
+      "apellido": "Garcia",
+      "email": "sofia.garcia@example.com",
+      "telefono": "555-3344",
+      "fecha_registro": "2024-04-12",
+      "activo": "false"
+    }
+  ]
+}
