@@ -47,33 +47,37 @@ describe('Search Component', () => {
     expect(info).toBeDefined();
   });
 
-  it('search without users', () => {
+  it('search without users', async () => {
     const input = screen.getByPlaceholderText('Buscar usuario');
 
     fireEvent.change(input, { target: { value: 'Juan' } });
 
-    const info = screen.getByTestId('not-found');
-    expect(info).toBeDefined();
+    await waitFor(() => {
+      const info = screen.getByTestId('not-found');
+      expect(info).toBeDefined();
+    });
   });
 
-  it('search with invalid user', () => {
+  it('search with invalid user', async () => {
     const input = screen.getByPlaceholderText('Buscar usuario');
     mockUsers('hernesto');
 
     fireEvent.change(input, { target: { value: 'hernesto' } });
 
-    const info = screen.getByTestId('not-found');
+    await waitFor(() => {
+      const info = screen.getByTestId('not-found');
 
-    expect(info).toBeDefined();
+      expect(info).toBeDefined();
+    });
   });
 
-  it('search with valid user name', async () => {
+  it('search with valid user name', () => {
     const input = screen.getByPlaceholderText('Buscar usuario');
     mockUsers('Juan');
 
     fireEvent.change(input, { target: { value: 'Juan' } });
 
-    await waitFor(() => {
+    waitFor(() => {
       const cards = screen.getAllByTestId('user-card');
 
       expect(cards).toBeDefined();
@@ -287,7 +291,7 @@ describe('Search Component', () => {
 
     fireEvent.change(input, { target: { value: search } });
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(window.location.search).toBe(`?q=${search}`);
     });
   });

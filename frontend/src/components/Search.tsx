@@ -25,33 +25,24 @@ export default function Search() {
   useEffect(() => {
     if (debouncedSearch) {
       setUsers([]);
-      try {
-        fetch(`${API_URL}/api/users?q=${debouncedSearch}`)
-          .then((res) => {
-            if (res.ok) {
-              return res.json();
-            } else {
-              throw new Error('Error al buscar usuarios');
-            }
-          })
-          .then((data) => {
-            setUsers(data.data);
-            setLoading(false);
-          })
-          .catch((error) => {
-            toast.error(
-              'Ocurrió un error al buscar usuarios, intenta de nuevamente en unos minutos'
-            );
-            setLoading(false);
-            console.error(error);
-          });
-      } catch (error) {
-        if (error instanceof Error) {
+
+      fetch(`${API_URL}/api/users?q=${debouncedSearch}`)
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error('Error al buscar usuarios');
+          }
+        })
+        .then((data) => {
+          setUsers(data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
           toast.error('Ocurrió un error al buscar usuarios, intenta de nuevamente en unos minutos');
-        }
-        setLoading(false);
-        console.error(error);
-      }
+          setLoading(false);
+          console.log(error);
+        });
     } else {
       setUsers([]);
       setLoading(false);
