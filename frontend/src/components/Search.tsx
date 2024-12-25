@@ -15,7 +15,9 @@ export default function Search() {
   const debouncedSearch = useDebounce(search, DEBOUNCE_TIME);
 
   useEffect(() => {
-    const newPathName = debouncedSearch ? `?q=${debouncedSearch}` : '/';
+    const currentPath = window.location.pathname;
+    const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+    const newPathName = debouncedSearch ? `${basePath}?q=${debouncedSearch}` : basePath;
 
     window.history.replaceState({}, '', newPathName);
   }, [debouncedSearch]);

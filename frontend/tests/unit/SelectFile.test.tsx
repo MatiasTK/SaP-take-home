@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen, waitFor, render, cleanup } from '@testing-library/react';
 import SelectFile from '@/components/SelectFile';
 import toast from 'react-hot-toast';
+import { API_URL } from '@/constants';
 
 global.fetch = vi.fn(() =>
   Promise.resolve({
@@ -55,7 +56,7 @@ describe('Select File Component', () => {
     fireEvent.change(input, { target: { files: [file] } });
     fireEvent.click(cargarBtn);
 
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/files', {
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/api/files`, {
       method: 'POST',
       body: expect.any(FormData),
     });

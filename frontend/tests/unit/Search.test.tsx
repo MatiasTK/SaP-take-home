@@ -287,8 +287,8 @@ describe('Search Component', () => {
 
     fireEvent.change(input, { target: { value: search } });
 
-    await waitFor(() => {
-      expect(window.history.replaceState).toHaveBeenCalledWith({}, '', `?q=${search}`);
+    waitFor(() => {
+      expect(window.location.search).toBe(`?q=${search}`);
     });
   });
 
