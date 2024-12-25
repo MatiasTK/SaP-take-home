@@ -1,0 +1,14 @@
+{
+  "name": "shawandpartners-prueba-tecnica",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm --filter ** dev",
+    "test": "pnpm --filter ** test",
+    "coverage": "pnpm --filter ** coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
