@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm --filter ** dev",
-    "test": "pnpm --filter ** test",
-    "coverage": "pnpm --filter ** coverage"
+    "dev": "pnpm --filter backend --filter frontend dev",
+    "test": "pnpm --filter backend --filter frontend test",
+    "coverage": "pnpm --filter backend --filter frontend coverage"
   },
   "keywords": [],
   "author": "",
