@@ -24,7 +24,6 @@ export default function Search() {
 
   useEffect(() => {
     if (debouncedSearch) {
-      setLoading(true);
       setUsers([]);
       try {
         fetch(`${API_URL}/api/users?q=${debouncedSearch}`)
@@ -40,17 +39,22 @@ export default function Search() {
             setLoading(false);
           })
           .catch((error) => {
-            toast.error(error.message);
+            toast.error(
+              'Ocurrió un error al buscar usuarios, intenta de nuevamente en unos minutos'
+            );
+            setLoading(false);
             console.error(error);
           });
       } catch (error) {
         if (error instanceof Error) {
-          toast.error(error.message);
+          toast.error('Ocurrió un error al buscar usuarios, intenta de nuevamente en unos minutos');
         }
+        setLoading(false);
         console.error(error);
       }
     } else {
       setUsers([]);
+      setLoading(false);
     }
   }, [debouncedSearch]);
 
@@ -67,15 +71,15 @@ export default function Search() {
 
     if (users.length == 0 && search.length == 0) {
       return (
-        <p className="mt-8 flex items-center gap-2" data-testid="no-users">
-          <LuInfo size={24} className="text-blue-500" />
+        <p className="mt-8 flex items-center gap-2 flex-wrap" data-testid="no-users">
+          <LuInfo className="text-blue-500 size-5 md:size-6" />
           No se realizó ninguna busqueda aún, <strong>prueba buscando un usuario.</strong>
         </p>
       );
     } else if (users.length == 0 && !loading) {
       return (
-        <p className="mt-8 flex items-center gap-2" data-testid="not-found">
-          <LuCircleX size={24} className="text-red-600" />
+        <p className="mt-8 flex items-center gap-2 flex-wrap" data-testid="not-found">
+          <LuCircleX className="text-red-600 size-5 md:size-6" />
           No se encontraron usuarios con la propiedad: <strong>{search}</strong>
         </p>
       );
@@ -103,8 +107,8 @@ export default function Search() {
 
   return (
     <div>
-      <h2 className="text-3xl ">Búsqueda</h2>
-      <div className="flex items-center max-w-[50%] mt-8 rounded-xl ps-4 bg-tertiary bg-opacity-75 border border-gray-400  text-white focus:outline  focus-within:ring-2 focus-within:ring-gray-400 focus-within:ring-opacity-50 transition-colors duration-300 ease-in-out">
+      <h2 className="text-2xl md:text-3xl">Búsqueda</h2>
+      <div className="flex items-center md:max-w-[50%] mt-8 rounded-xl ps-4 bg-tertiary bg-opacity-75 border border-gray-400  text-white focus:outline  focus-within:ring-2 focus-within:ring-gray-400 focus-within:ring-opacity-50 transition-colors duration-300 ease-in-out">
         <LuSearch className="text-gray-400" size={20} />
         <input
           type="text"
@@ -112,7 +116,10 @@ export default function Search() {
           className=" w-full bg-transparent ms-4 py-2
      placeholder:text-gray-300 outline-none"
           placeholder="Buscar usuario "
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(event) => {
+            setSearch(event.target.value);
+            setLoading(true);
+          }}
         />
       </div>
       {renderUsers()}

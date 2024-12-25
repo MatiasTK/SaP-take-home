@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
       toastOptions={{
         style: {
           color: '#fff',
-          backgroundColor: '#2e3532',
+          backgroundColor: '#303134',
         },
       }}
     />

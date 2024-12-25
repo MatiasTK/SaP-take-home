@@ -50,10 +50,10 @@ export default function SelectFile() {
 
   return (
     <div>
-      <h2 className="text-4xl">Cargar información</h2>
-      <form className="py-12 flex gap-4" onSubmit={handleFormSubmit}>
+      <h2 className="text-2xl md:text-3xl">Cargar información</h2>
+      <form className="pb-12 pt-8 gap-6 grid md:grid-cols-2 md:w-fit" onSubmit={handleFormSubmit}>
         <Button onClick={handleFileSelect}>
-          <LuFileSearch />
+          <LuFileSearch className="sm:size-5 md:size-auto" />
           <span>Seleccionar archivo CSV</span>
         </Button>
         <input
@@ -85,7 +85,7 @@ export default function SelectFile() {
               />
             </svg>
           ) : (
-            <LuUpload />
+            <LuUpload className="sm:size-5 md:size-auto" />
           )}
           <span>Cargar archivo</span>
         </Button>
