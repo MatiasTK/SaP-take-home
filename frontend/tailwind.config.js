@@ -13,7 +13,11 @@ export default {
         fadeInUp: 'fadeInUp 0.5s ease-out',
       },
       colors: {
-        background: '#1a202c',
+        primary: '#303134',
+        secondary: '#EE6c4D',
+        tertiary: '#171717',
+        text: '#ffffff',
+        background: '#202124',
       },
     },
   },

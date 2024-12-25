@@ -26,7 +26,8 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"]
-    }
+    },
+    "types": ["vite/client", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
