@@ -9,6 +9,7 @@ export default defineConfig({
   test: {
     name: 'e2e tests',
     globals: true,
+    silent: true,
     browser: {
       enabled: true,
       name: 'chromium',

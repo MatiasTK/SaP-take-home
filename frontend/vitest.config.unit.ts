@@ -12,6 +12,7 @@ export default defineConfig({
     globals: true,
     setupFiles: './tests/setupTests.ts',
     include: ['tests/unit/**/*.test.tsx'],
+    silent: true,
     coverage: {
       reporter: ['text', 'html'],
       include: ['src/**/*.tsx'],
