@@ -1,4 +1,4 @@
-export interface userRecord {
+interface userRecord {
   [key: string]: string;
 }
 

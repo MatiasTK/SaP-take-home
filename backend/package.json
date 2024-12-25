@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ts-node -r ts-node/register/transpile-only -r tsconfig-paths/register ./src/app.ts",
     "dev": "nodemon",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "convert-csv-to-json": "^2.50.0",
