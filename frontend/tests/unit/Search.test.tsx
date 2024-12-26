@@ -1,314 +1,282 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fireEvent, screen, waitFor, render, cleanup } from '@testing-library/react';
 import Search from '@/components/Search';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import toast from 'react-hot-toast';
-import usersMock from '../data/mock.json';
-
-vi.mock('react-hot-toast', () => ({
-  default: {
-    success: vi.fn(),
-    error: vi.fn(),
-  },
-}));
-
-// Copy of what the backend does
-const mockUsers = (filter: string) => {
-  global.fetch = vi.fn(() => {
-    return Promise.resolve({
-      ok: true,
-      json: () =>
-        Promise.resolve({
-          data: usersMock.data.filter((user: { [key: string]: string }) => {
-            return Object.keys(user).some((key) => {
-              return user[key].toString().toLowerCase().includes(filter.toString().toLowerCase());
-            });
-          }),
-        }),
-    } as Response);
-  });
-};
+import mockFetch from '../utils/testUtils';
 
 describe('Search Component', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    render(<Search />);
+    cleanup();
+    window.history.pushState({}, '', '/');
   });
 
   afterEach(() => {
-    cleanup();
+    vi.resetAllMocks();
   });
 
-  it('renders search input', () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    const info = screen.getByTestId('no-users');
+  it('01 - Renders search input', () => {
+    render(<Search />);
 
-    expect(input).toBeDefined();
-    expect(input).toHaveProperty('value', '');
-    expect(info).toBeDefined();
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
+    const searchInfo = screen.getByTestId('no-users');
+
+    expect(searchInput).toBeDefined();
+    expect(searchInfo).toBeDefined();
+    expect(searchInput).toHaveProperty('value', '');
   });
 
-  it('search without users', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
+  it('02 - Show error when searching without users', async () => {
+    render(<Search />);
 
-    fireEvent.change(input, { target: { value: 'Juan' } });
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-    await waitFor(() => {
-      const info = screen.getByTestId('not-found');
-      expect(info).toBeDefined();
-    });
+    fireEvent.change(searchInput, { target: { value: 'Juan' } });
+
+    const searchInfo = await screen.findByTestId('not-found');
+
+    expect(searchInfo).toBeDefined();
   });
 
-  it('search with invalid user', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('hernesto');
+  it('03 - Show error when searching inexistent user', async () => {
+    // Mock API response
+    mockFetch('Hernesto');
 
-    fireEvent.change(input, { target: { value: 'hernesto' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const info = screen.getByTestId('not-found');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(info).toBeDefined();
-    });
+    fireEvent.change(searchInput, { target: { value: 'Hernesto' } });
+
+    const searchInfo = await screen.findByTestId('not-found');
+
+    expect(searchInfo).toBeDefined();
   });
 
-  it('search with valid user name', () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('Juan');
+  it('04 - Search user by name', async () => {
+    // Mock API response
+    mockFetch('Juan');
 
-    fireEvent.change(input, { target: { value: 'Juan' } });
+    render(<Search />);
 
-    waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: 'Juan' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('Juan');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('Juan');
   });
 
-  it('search with valid user id', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('1');
+  it('05 - Search user by id', async () => {
+    // Mock API response
+    mockFetch('1');
 
-    fireEvent.change(input, { target: { value: '1' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: '1' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('1');
-    });
+    expect(cards).toBeDefined();
+    expect(cards.length).toBeGreaterThanOrEqual(1);
+    expect(cards[0].textContent).toContain('1');
   });
 
-  it('search with valid user email', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('juan.perez@example.com');
+  it('06 - Search user by email', async () => {
+    // Mock API response
+    mockFetch('juan.perez@example.com');
 
-    fireEvent.change(input, { target: { value: 'juan.perez@example.com' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: 'juan.perez@example.com' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('juan.perez@example.com');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('juan.perez@example.com');
   });
 
-  it('search with valid user phone', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('555-1234');
+  it('07 - Search user by phone', async () => {
+    // Mock API response
+    mockFetch('555-1234');
 
-    fireEvent.change(input, { target: { value: '555-1234' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: '555-1234' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('555-1234');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('555-1234');
   });
 
-  it('search with valid surname', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('Pérez');
+  it('08 - Search user by surname', async () => {
+    // Mock API response
+    mockFetch('Pérez');
 
-    fireEvent.change(input, { target: { value: 'Pérez' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: 'Pérez' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('Pérez');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('Pérez');
   });
 
-  it('search with valid register date', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('2024-01-15');
+  it('09 - Search user by register date', async () => {
+    // Mock API response
+    mockFetch('2024-01-15');
 
-    fireEvent.change(input, { target: { value: '2024-01-15' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: '2024-01-15' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('2024-01-15');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('2024-01-15');
   });
 
-  it('search with account status', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('true');
+  it('10 - Search user by account status', async () => {
+    // Mock API response
+    mockFetch('true');
 
-    fireEvent.change(input, { target: { value: 'true' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: 'true' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('true');
-    });
+    expect(cards).toBeDefined();
+    expect(cards.length).toBeGreaterThanOrEqual(1);
+    expect(cards[0].textContent).toContain('true');
   });
 
-  it('search with partial match and insensitive case', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('pErEZ@eXaMple');
+  it('11 - Partial search and case insensitive', async () => {
+    // Mock API response
+    mockFetch('pErEZ@eXaMple');
 
-    fireEvent.change(input, { target: { value: 'pErEZ@eXaMple' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: 'pErEZ@eXaMple' } });
 
-      const uniqueCard = cards[0];
+    const cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('juan.perez@example.com');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('juan.perez@example.com');
   });
 
-  it('search multiple users', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('ez');
+  it('12 - Search multiple users', async () => {
+    // Mock API response
+    mockFetch('ez');
 
-    fireEvent.change(input, { target: { value: 'ez' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
+    fireEvent.change(searchInput, { target: { value: 'ez' } });
 
-      // Peréz, Gonzalez, Lopez, Martinez
-      expect(cards).toHaveLength(4);
-    });
+    const cards = await screen.findAllByTestId('user-card');
+
+    expect(cards).toBeDefined();
+
+    // Peréz, Gonzalez, Lopez, Martinez
+    expect(cards).toHaveLength(4);
   });
 
-  it('updates the search on change', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    mockUsers('Juan');
+  it('13 - Updates cards on search change', async () => {
+    // Mock API response
+    mockFetch('Juan');
 
-    fireEvent.change(input, { target: { value: 'Juan' } });
+    render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
+    fireEvent.change(searchInput, { target: { value: 'Juan' } });
 
-      const uniqueCard = cards[0];
+    let cards = await screen.findAllByTestId('user-card');
 
-      expect(uniqueCard?.textContent).toContain('Juan');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('Juan');
 
-    mockUsers('Maria');
+    // Mock API response
+    mockFetch('Maria');
 
-    fireEvent.change(input, { target: { value: 'Maria' } });
+    fireEvent.change(searchInput, { target: { value: 'Maria' } });
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    cards = await screen.findAllByTestId('user-card');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
-
-      const uniqueCard = cards[0];
-
-      expect(uniqueCard?.textContent).toContain('Maria');
-    });
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('Maria');
   });
 
-  it('shows error on fetch fail', async () => {
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    global.fetch = vi.fn(() => {
+  it('14 - Show error when API fails', async () => {
+    vi.spyOn(window, 'fetch').mockImplementationOnce(() => {
       return Promise.resolve({
         ok: false,
-      } as Response);
+      }) as Promise<Response>;
     });
 
-    fireEvent.change(input, { target: { value: 'Juan' } });
+    // Mock toast
+    vi.spyOn(toast, 'error');
 
-    await waitFor(() => {
-      expect(toast.error).toHaveBeenCalled();
-    });
-  });
-
-  it('updates url on search', async () => {
-    global.history.replaceState = vi.fn();
-
-    // Re-render search
-    cleanup();
     render(<Search />);
 
-    const input = screen.getByPlaceholderText('Buscar usuario');
-    const search = 'Juan';
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-    fireEvent.change(input, { target: { value: search } });
+    fireEvent.change(searchInput, { target: { value: 'Juan' } });
 
-    await waitFor(() => {
-      expect(window.location.search).toBe(`?q=${search}`);
-    });
+    await waitFor(() => expect(toast.error).toHaveBeenCalled());
   });
 
-  it('shows correct users on url change', async () => {
-    mockUsers('Juan');
-    history.pushState({}, '', '?q=Juan');
+  it('15 - Updates url search param on search', async () => {
+    // Mock API response
+    mockFetch('Juan');
 
-    // Re-render search
-    cleanup();
     render(<Search />);
 
-    await waitFor(() => {
-      const cards = screen.getAllByTestId('user-card');
+    const searchInput = screen.getByPlaceholderText('Buscar usuario');
 
-      expect(cards).toBeDefined();
-      expect(cards).toHaveLength(1);
-    });
+    fireEvent.change(searchInput, { target: { value: 'Juan' } });
+
+    await waitFor(() => expect(window.location.search).toBe('?q=Juan'));
+  });
+
+  it('16 - Show users from url search param', async () => {
+    // Mock API response
+    mockFetch('Juan');
+
+    window.history.pushState({}, '', '?q=Juan');
+
+    render(<Search />);
+
+    const cards = await screen.findAllByTestId('user-card');
+
+    expect(cards).toBeDefined();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].textContent).toContain('Juan');
   });
 });

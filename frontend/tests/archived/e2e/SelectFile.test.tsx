@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render } from 'vitest-browser-react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import SelectFile from '../../src/components/SelectFile';
+import SelectFile from '../../../src/components/SelectFile';
 import toast from 'react-hot-toast';
 
 const mockFetch = vi.fn();

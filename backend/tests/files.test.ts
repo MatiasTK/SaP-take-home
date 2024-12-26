@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from '@/app';
 import path from 'path';
 
-describe('POST /api/files with accepted file', () => {
+describe('01 - POST /api/files with accepted file', () => {
   it('should upload a CSV file', async () => {
     const filePath = path.join(__dirname, 'data/mock.csv');
     const response = await request(app).post('/api/files').attach('file', filePath);
@@ -12,7 +12,7 @@ describe('POST /api/files with accepted file', () => {
   });
 });
 
-describe('POST /api/files with rejected file', () => {
+describe('02 - POST /api/files with rejected file', () => {
   it('should not upload a non-CSV file', async () => {
     const filePath = path.join(__dirname, 'data/mock.txt');
     const response = await request(app).post('/api/files').attach('file', filePath);
@@ -22,7 +22,7 @@ describe('POST /api/files with rejected file', () => {
   });
 });
 
-describe('POST /api/files without file', () => {
+describe('03 - POST /api/files without file', () => {
   it('should not upload a file', async () => {
     const response = await request(app).post('/api/files');
 
@@ -31,7 +31,7 @@ describe('POST /api/files without file', () => {
   });
 });
 
-describe('POST /api/files with empty csv file', () => {
+describe('04 - POST /api/files with empty csv file', () => {
   it('should not upload a file', async () => {
     const filePath = path.join(__dirname, 'data/mock_empty.csv');
     const response = await request(app).post('/api/files').attach('file', filePath);

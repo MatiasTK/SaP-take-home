@@ -27,7 +27,7 @@ describe('Select File Component', () => {
     cleanup();
   });
 
-  it('renders upload buttons', () => {
+  it('01 - renders upload buttons', () => {
     const SeleccionarBtn = screen.getByText('Seleccionar archivo CSV').parentElement;
     const cargarBtn = screen.getByText('Cargar archivo').parentElement;
 
@@ -36,7 +36,7 @@ describe('Select File Component', () => {
     expect(cargarBtn).toHaveProperty('disabled', true);
   });
 
-  it('handles file selection', async () => {
+  it('02 - handles file selection', async () => {
     const file = new File([''], 'file.csv', { type: 'text/csv' });
     const input = screen.getByTestId('file-input') as HTMLInputElement;
     const cargarBtn = screen.getByText('Cargar archivo').parentElement;
@@ -48,7 +48,7 @@ describe('Select File Component', () => {
     });
   });
 
-  it('submits file upload', async () => {
+  it('03 - submits file upload', async () => {
     const file = new File([''], 'file.csv', { type: 'text/csv' });
     const input = screen.getByTestId('file-input') as HTMLInputElement;
     const cargarBtn = screen.getByText('Cargar archivo').parentElement as HTMLButtonElement;
@@ -68,7 +68,7 @@ describe('Select File Component', () => {
     expect(cargarBtn).toHaveProperty('disabled', true);
   });
 
-  it('handles file upload error', async () => {
+  it('04 - handles file upload error', async () => {
     global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: false,

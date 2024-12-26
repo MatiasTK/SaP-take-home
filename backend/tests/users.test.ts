@@ -7,7 +7,7 @@ beforeAll(async () => {
   await request(app).post('/api/files').attach('file', filePath);
 });
 
-describe('GET /api/users with valid id', () => {
+describe('01 - GET /api/users with valid id', () => {
   it('should return a json containing the id', async () => {
     // 1,Juan,Pérez,juan.perez@example.com,555-1234,2024-01-15,true
     const response = await request(app).get('/api/users?q=1');
@@ -25,7 +25,7 @@ describe('GET /api/users with valid id', () => {
   });
 });
 
-describe('GET /api/users with valid nombre', () => {
+describe('02 - GET /api/users with valid nombre', () => {
   it('should return a json containing the nombre', async () => {
     // 1,Juan,Pérez,juan.perez@example.com,555-1234,2024-01-15,true
     const response = await request(app).get('/api/users?q=Juan');
@@ -43,7 +43,7 @@ describe('GET /api/users with valid nombre', () => {
   });
 });
 
-describe('GET /api/users with valid apellido', () => {
+describe('03 - GET /api/users with valid apellido', () => {
   it('should return a json containing the apellido', async () => {
     const response = await request(app).get('/api/users?q=Pérez');
 
@@ -60,7 +60,7 @@ describe('GET /api/users with valid apellido', () => {
   });
 });
 
-describe('GET /api/users with valid email', () => {
+describe('04 - GET /api/users with valid email', () => {
   it('should return a json containing the email', async () => {
     const response = await request(app).get('/api/users?q=juan.perez@example.com');
 
@@ -77,7 +77,7 @@ describe('GET /api/users with valid email', () => {
   });
 });
 
-describe('GET /api/users with valid telefono', () => {
+describe('05 - GET /api/users with valid telefono', () => {
   it('should return a json containing the telefono', async () => {
     const response = await request(app).get('/api/users?q=555-1234');
 
@@ -94,7 +94,7 @@ describe('GET /api/users with valid telefono', () => {
   });
 });
 
-describe('GET /api/users with valid fecha_registro', () => {
+describe('06 - GET /api/users with valid fecha_registro', () => {
   it('should return a json containing the fecha_registro', async () => {
     const response = await request(app).get('/api/users?q=2024-01-15');
 
@@ -111,7 +111,7 @@ describe('GET /api/users with valid fecha_registro', () => {
   });
 });
 
-describe('GET /api/users with valid activo', () => {
+describe('07 - GET /api/users with valid activo', () => {
   it('should return a json containing the activo', async () => {
     const response = await request(app).get('/api/users?q=true');
 
@@ -128,7 +128,7 @@ describe('GET /api/users with valid activo', () => {
   });
 });
 
-describe('GET /api/users with invalid query', () => {
+describe('08 - GET /api/users with invalid query', () => {
   it('should return a json containing an error message', async () => {
     const response = await request(app).get('/api/users');
 
@@ -139,7 +139,7 @@ describe('GET /api/users with invalid query', () => {
   });
 });
 
-describe('GET /api/users with lowercase query', () => {
+describe('09 - GET /api/users with lowercase query', () => {
   it('should return a json containing the correct user', async () => {
     const response = await request(app).get('/api/users?q=juan');
 
@@ -156,7 +156,7 @@ describe('GET /api/users with lowercase query', () => {
   });
 });
 
-describe('GET /api/users with valid activo and multiple results', () => {
+describe('10 - GET /api/users with valid activo and multiple results', () => {
   // 3,Carlos,Lopez,carlos.lopez@example.com,555-9101,2023-11-05,false
   // 5,Sofia,Garcia,sofia.garcia@example.com,555-3344,2024-04-12,false
 
@@ -185,7 +185,7 @@ describe('GET /api/users with valid activo and multiple results', () => {
   });
 });
 
-describe('GET /api/users with partial valid name query', () => {
+describe('11 - GET /api/users with partial valid name query', () => {
   it('should return a json containing the correct user', async () => {
     const response = await request(app).get('/api/users?q=Carl');
 
@@ -202,7 +202,7 @@ describe('GET /api/users with partial valid name query', () => {
   });
 });
 
-describe('GET /api/users with partial valid email query', () => {
+describe('12- GET /api/users with partial valid email query', () => {
   it('should return a json containing the correct user', async () => {
     const response = await request(app).get('/api/users?q=.lopez');
 
@@ -219,7 +219,7 @@ describe('GET /api/users with partial valid email query', () => {
   });
 });
 
-describe('GET /api/users with partial valid apellido query', () => {
+describe('13 - GET /api/users with partial valid apellido query', () => {
   it('should return a json containing the correct user', async () => {
     const response = await request(app).get('/api/users?q=Lop');
 
@@ -236,7 +236,7 @@ describe('GET /api/users with partial valid apellido query', () => {
   });
 });
 
-describe('GET /api/users with partial valid telefono query', () => {
+describe('14 - GET /api/users with partial valid telefono query', () => {
   it('should return a json containing the correct user', async () => {
     const response = await request(app).get('/api/users?q=555-91');
 
@@ -253,7 +253,7 @@ describe('GET /api/users with partial valid telefono query', () => {
   });
 });
 
-describe('GET /api/users with partial valid fecha_registro query', () => {
+describe('15 - GET /api/users with partial valid fecha_registro query', () => {
   it('should return a json containing the correct user', async () => {
     const response = await request(app).get('/api/users?q=2023-11');
 
@@ -270,7 +270,7 @@ describe('GET /api/users with partial valid fecha_registro query', () => {
   });
 });
 
-describe('GET /api/users with non existent user', () => {
+describe('16 - GET /api/users with non existent user', () => {
   it('should return a json containing an empty array', async () => {
     const response = await request(app).get('/api/users?q=999');
 

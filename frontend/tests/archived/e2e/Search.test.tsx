@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import Search from '../../src/components/Search';
+import Search from '../../../src/components/Search';
 import toast from 'react-hot-toast';
 
 vi.mock('react-hot-toast', () => ({
